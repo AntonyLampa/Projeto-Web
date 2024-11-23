@@ -12,3 +12,16 @@ body{
     min-height: 100vh;
     padding: 20px;
 }
+.containergeral{
+    opacity: 0.9;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    min-width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.imagens{
+    width: 100px; /* Largura do quadrado */
+    height: 100px; /* Altura do quadrado */
+    object-fit: cover
+}
