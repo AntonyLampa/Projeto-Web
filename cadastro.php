@@ -27,6 +27,7 @@ if ($cmd) {
     );
     if($cmd->execute()) {
         echo "Operação realizada com sucesso!";
+        header("Location: login.html");
     } else {
         echo "Erro: " . $cmd->error;
     }
