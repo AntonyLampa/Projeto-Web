@@ -1,6 +1,13 @@
 <?php
-session_start(); // Inicia a sessão para armazenar mensagens de erro
+session_start(); // Inicia a sessão
 include 'conexao.php';
+
+// Verifica se o usuário já está logado
+if (isset($_SESSION['usuario_id'])) {
+    // Redireciona diretamente para o menu se estiver logado
+    header("Location: menu.html");
+    exit();
+}
 
 // Verifica se os campos foram enviados
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,19 +31,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Verifica se a senha está correta
             $usuario = $result->fetch_assoc();
             if (password_verify($senha, $usuario['senha'])) {
-                // Login bem-sucedido
-                header("Location: menu.html"); // Redireciona para o menu
+                // Armazena o ID do usuário e outras informações na sessão
+                $_SESSION['usuario_id'] = $usuario['id'];
+                $_SESSION['usuario_nome'] = $usuario['nome'];
+
+                // Redireciona para o menu
+                header("Location: menu.html");
                 exit();
             } else {
-                // Armazena a mensagem de erro na sessão
-                $_SESSION['login_error'] = "Senha e/ou E-mail incorretos";
+                $_SESSION['login_error'] = "Senha e/ou E-mail incorretos.";
             }
         } else {
-            // Armazena a mensagem de erro na sessão
             $_SESSION['login_error'] = "Email não encontrado.";
         }
     } else {
-        // Armazena a mensagem de erro na sessão
         $_SESSION['login_error'] = "Erro ao preparar a consulta: " . $conn->error;
     }
 

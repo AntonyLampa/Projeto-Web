@@ -1,3 +1,13 @@
+<?php
+session_start(); // Inicia a sessão
+
+// Verifica se o usuário já está logado
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: menu.html"); // Redireciona para o menu se estiver logado
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
