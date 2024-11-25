@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['usuario_nome'] = $usuario['nome'];
 
                 // Redireciona para o menu
-                header("Location: menu.html");
+                header("Location: menu.php");
                 exit();
             } else {
                 $_SESSION['login_error'] = "Senha e/ou E-mail incorretos.";

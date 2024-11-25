@@ -1,9 +1,11 @@
 <?php
-session_start(); // Inicia a sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Inicia a sessão somente se ela ainda não estiver ativa
+}
 
 // Verifica se o usuário já está logado
 if (isset($_SESSION['usuario_id'])) {
-    header("Location: menu.html"); // Redireciona para o menu se estiver logado
+    header("Location: menu.php"); // Redireciona para o menu se estiver logado
     exit();
 }
 ?>
@@ -148,7 +150,6 @@ if (isset($_SESSION['usuario_id'])) {
 
             <!-- Exibição da mensagem de erro -->
             <?php
-            session_start();
             if (isset($_SESSION['login_error'])) {
                 echo '<div class="error-message active">' . $_SESSION['login_error'] . '</div>';
                 unset($_SESSION['login_error']); // Limpa o erro após exibir

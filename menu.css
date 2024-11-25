@@ -20,8 +20,93 @@ body{
     min-width: 400px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-.imagens{
-    width: 100px; /* Largura do quadrado */
-    height: 100px; /* Altura do quadrado */
-    object-fit: cover
+.item {
+    border: 2px solid black; /* Borda preta */
+    border-radius: 10px; /* Cantos arredondados */
+    padding: 20px; /* Espaçamento interno */
+    margin: 15px; /* Espaçamento externo entre itens */
+    display: inline-block; /* Para que os itens fiquem lado a lado */
+    text-align: center; /* Centraliza o conteúdo dentro do item */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para destacar o item */
+    background-color: #f9f9f9; /* Cor de fundo clara */
+    width: 200px; /* Largura fixa para uniformizar os itens */
+    vertical-align: top; /* Alinha itens na parte superior */
+}
+
+.imagens {
+    width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner */
+    height: 200px; /* Altura fixa para as imagens */
+    object-fit: cover; /* Faz com que a imagem cubra o espaço sem distorcer */
+    border-radius: 8px; /* Cantos arredondados para a imagem */
+}
+
+.item p {
+    margin-top: 10px; /* Espaço entre a imagem e o nome */
+    font-size: 1.2em; /* Tamanho do nome */
+    font-weight: bold; /* Negrito no nome */
+}
+
+.detalhes-link {
+    display: inline-block; /* Faz o link ficar em linha com o nome */
+    margin-top: 10px; /* Espaçamento entre o nome e o link */
+    color: #4a90e2; /* Cor azul para o link */
+    text-decoration: none; /* Remove o sublinhado */
+    font-weight: bold; /* Deixa o texto em negrito */
+    transition: color 0.3s ease, transform 0.3s ease; /* Transição suave de cor e efeito de hover */
+}
+
+.detalhes-link:hover {
+    color: #357abd; /* Cor mais escura quando passar o mouse */
+    transform: scale(1.05); /* Efeito de aumento do link */
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.menu-links {
+    display: flex; /* Usando flexbox para os links ficarem lado a lado */
+    justify-content: center; /* Centraliza os links horizontalmente */
+    margin-bottom: 20px; /* Espaço abaixo do menu de links */
+}
+
+.menu-links a {
+    text-decoration: none; /* Remove o sublinhado padrão dos links */
+    color: #4a90e2; /* Cor do texto dos links */
+    font-size: 1.2em; /* Tamanho da fonte */
+    font-weight: bold; /* Deixa a fonte em negrito */
+    margin: 0 15px; /* Espaçamento entre os links */
+    transition: color 0.3s ease, transform 0.3s ease; /* Transições suaves para a cor e o efeito de hover */
+}
+
+.menu-links a:hover {
+    color: #357abd; /* Cor do texto quando o link é hover */
+    transform: scale(1.1); /* Efeito de aumentar o tamanho do link quando hover */
+}
+
+.menu-links a:focus {
+    outline: none; /* Remove o contorno padrão quando o link está focado */
+    color: #357abd; /* Cor do texto quando o link é focado */
+    text-decoration: underline; /* Sublinha o link quando focado */
+}
+.item a {
+    text-decoration: none; /* Remove o sublinhado */
+    color: #4a90e2; /* Cor azul para o link */
+    font-weight: bold; /* Deixa o texto em negrito */
+    display: inline-block; /* Para que o link tenha um bloco de tamanho adequado */
+    margin-top: 10px; /* Espaço superior */
+    transition: color 0.3s ease, transform 0.3s ease; /* Transição suave de cor e efeito de hover */
+}
+
+.item a:hover {
+    color: #357abd; /* Cor mais escura quando passar o mouse */
+    transform: scale(1.05); /* Efeito de aumento do link */
+}
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
