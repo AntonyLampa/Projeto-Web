@@ -1,60 +1,57 @@
 <?php
-session_start();
+session_start();  // Inicia a sessão
 
-if (isset($_SESSION['pedido'])) {
-    $_SESSION['pedido'] = []; 
+// Inclui a conexão com o banco de dados
+include('conexao.php');
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    echo "Você precisa estar logado para finalizar o pedido.";
+    // Ou redirecionar para a página de login
+    header("Location: index.php");
+    exit();
 }
 
-?>
+// Verifica se o pedido existe na sessão
+if (isset($_SESSION['pedido']) && !empty($_SESSION['pedido'])) {
+    // Obtém o ID do usuário logado
+    $idUsuario = $_SESSION['usuario_id'];  // O ID do usuário logado
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="menu.css">
-    <title>Finalizar Pedido</title>
-    <style>
-        .menu{
-            position: absolute;
-            top: 20px; 
-            right: 20px; 
-            text-decoration: none;
-            color: #357abd;
-            font-size: 18px; 
-            padding: 10px; 
-            background-color: #f1f1f1; 
-            border-radius: 5px; 
+    // Começa a transação para garantir integridade dos dados
+    $conn->begin_transaction();
+
+    try {
+        // Insere os itens do pedido na tabela tb_itens_pedido
+        foreach ($_SESSION['pedido'] as $item) {
+            $idItem = $item['id'];  // ID do item
+            $quantidade = $item['quantidade'];  // Quantidade
+            $preco = $item['preco'];  // Preço do item
+
+            // Preparando a query para inserir o pedido na tabela tb_itens_pedido
+            $sql = "INSERT INTO tb_itens_pedido (idUsuario, idItem, quantidade, preco, finalizado) 
+                    VALUES (?, ?, ?, ?, 1)";  // finalizado é 0 (não finalizado)
+
+            // Usando prepared statements para evitar SQL injection
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("iiii", $idUsuario, $idItem, $quantidade, $preco);
+            $stmt->execute();
         }
-        .message {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 24px;
-            color: green;
-        }
-        .message a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #357abd;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <a class="menu" href="menu.php">Menu</a>
-        <div class="title">
-            <h1>Pedido Efetuado com Sucesso!</h1>
-        </div>
-        <div class="containergeral">
-        <div class="message">
-            <p>Seu pedido foi registrado com suceso. Obrigado pela sua compra!</p>
-            <a href="menu.php">Menu</a>
-            <div>
-        </div>
-    </div>
-</body>
-</html>
+
+        // Se tudo correu bem, confirma a transação
+        $conn->commit();
+
+        // Limpar o pedido da sessão após o registro
+        $_SESSION['pedido'] = [];
+
+        // Redireciona o usuário para uma página de confirmação ou menu
+        header("Location: confirmacao.php");
+        exit;
+    } catch (Exception $e) {
+        // Caso ocorra algum erro, faz o rollback da transação
+        $conn->rollback();
+        echo "Erro ao finalizar o pedido: " . $e->getMessage();
+    }
+} else {
+    echo "Seu carrinho está vazio.";
+}
+?>
