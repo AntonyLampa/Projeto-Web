@@ -45,6 +45,13 @@
                     <h2><?php echo htmlspecialchars($item['nome']); ?></h2>
                     <p><strong>Descrição:</strong> <?php echo htmlspecialchars($item['descricao']); ?></p>
                     <p><strong>Preço:</strong> R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></p>
+
+                    <form action="carrinho.php" method="POST">
+                        <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
+                        <input type="hidden" name="nome" value="<?php echo htmlspecialchars($item['nome']); ?>">
+                        <input type="hidden" name="preco" value="<?php echo $item['preco']; ?>">
+                        <button type="submit">Adicionar ao Pedido</button>
+                    </form>
                 </div>
             <?php else: ?>
                 <p>Item não encontrado.</p>
