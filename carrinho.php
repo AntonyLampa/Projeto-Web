@@ -42,6 +42,7 @@ foreach ($_SESSION['pedido'] as $item) {
 </head>
 <body>
     <div class="container">
+        <a href="menu.php">Menu</a>
         <h1>Carrinho de Compras</h1>
 
         <!-- Se o carrinho não estiver vazio, exibe os itens -->
@@ -84,15 +85,16 @@ foreach ($_SESSION['pedido'] as $item) {
         <?php else: ?>
             <p>Seu carrinho está vazio.</p>
         <?php endif; ?>
-
-        <h2>Adicionar Item ao Carrinho</h2>
-        <!-- Formulário para adicionar um item (exemplo) -->
+    
+<!-- <h2>Adicionar Item ao Carrinho</h2>
+        -- Formulário para adicionar um item (exemplo) 
         <form action="carrinho.php" method="POST">
             <input type="hidden" name="id" value="1">
             <input type="hidden" name="nome" value="Item Exemplo">
             <input type="hidden" name="preco" value="99.90">
             <button type="submit" name="adicionar" value="1">Adicionar ao Carrinho</button>
         </form>
+        -->
     </div>
 </body>
 </html>

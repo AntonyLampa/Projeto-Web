@@ -13,6 +13,7 @@
 <body>
     <div class="container">
         <h1>Fazer um Pedido</h1>
+        <a href="carrinho.php">Carrinho</a>
         <div class="containergeral">
             <div class="image">
                 <img src="images/logotipo.png" alt="Logotipo" width="70px">
