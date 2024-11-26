@@ -1,34 +1,63 @@
 <?php
 session_start();
 
-// Verifica se a sessão de pedido existe, caso contrário, cria uma nova
+
 if (!isset($_SESSION['pedido'])) {
     $_SESSION['pedido'] = [];
 }
 
-// Adicionar item ao carrinho
+
 if (isset($_POST['adicionar'])) {
     $item = [
         'id' => $_POST['id'],
         'nome' => $_POST['nome'],
-        'preco' => $_POST['preco']
+        'preco' => $_POST['preco'],
+        'quantidade' => 1 
     ];
-    $_SESSION['pedido'][] = $item;
+
+    
+    $item_encontrado = false;
+    foreach ($_SESSION['pedido'] as &$produto) {
+        if ($produto['id'] == $item['id']) {
+            $produto['quantidade']++; 
+            $item_encontrado = true;
+            break;
+        }
+    }
+
+    
+    if (!$item_encontrado) {
+        $_SESSION['pedido'][] = $item;
+    }
 }
 
-// Remover item do carrinho
+
+if (isset($_POST['aumentar'])) {
+    $index = $_POST['index'];
+    $_SESSION['pedido'][$index]['quantidade']++; 
+}
+
+
+if (isset($_POST['diminuir'])) {
+    $index = $_POST['index'];
+    if ($_SESSION['pedido'][$index]['quantidade'] > 1) {
+        $_SESSION['pedido'][$index]['quantidade']--; 
+    }
+}
+
+
 if (isset($_POST['remover'])) {
     $index = $_POST['index'];
     if (isset($_SESSION['pedido'][$index])) {
         unset($_SESSION['pedido'][$index]);
-        $_SESSION['pedido'] = array_values($_SESSION['pedido']);  // Reindexa os itens após remoção
+        $_SESSION['pedido'] = array_values($_SESSION['pedido']);  
     }
 }
 
-// Calcular o total do pedido
+
 $total = 0;
 foreach ($_SESSION['pedido'] as $item) {
-    $total += $item['preco'];
+    $total += $item['preco'] * $item['quantidade']; 
 }
 ?>
 
@@ -39,13 +68,27 @@ foreach ($_SESSION['pedido'] as $item) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="menu.css">
     <title>Carrinho de Compras</title>
+    <style>
+        .menu{
+            position: absolute;
+            top: 20px; 
+            right: 20px; 
+            text-decoration: none;
+            color: #357abd;
+            font-size: 18px; 
+            padding: 10px; 
+            background-color: #f1f1f1;
+            border-radius: 5px; 
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <a href="menu.php">Menu</a>
+        <a class = "menu" href="menu.php">Menu</a>
         <h1>Carrinho de Compras</h1>
 
-        <!-- Se o carrinho não estiver vazio, exibe os itens -->
+        <div class="containergeral">
+        
         <?php if (count($_SESSION['pedido']) > 0): ?>
             <table>
                 <thead>
@@ -62,10 +105,16 @@ foreach ($_SESSION['pedido'] as $item) {
                         <tr>
                             <td><?php echo htmlspecialchars($item['nome']); ?></td>
                             <td>R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></td>
-                            <td>1</td> <!-- Supondo quantidade 1 para cada item -->
-                            <td>R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></td>
                             <td>
-                                <!-- Formulário para remover o item -->
+                                <form action="carrinho.php" method="POST" style="display:inline;">
+                                    <button type="submit" name="diminuir" value="1">-</button>
+                                    <input type="hidden" name="index" value="<?php echo $index; ?>">
+                                    <?php echo $item['quantidade']; ?>
+                                    <button type="submit" name="aumentar" value="1">+</button>
+                                </form>
+                            </td>
+                            <td>R$ <?php echo number_format($item['preco'] * $item['quantidade'], 2, ',', '.'); ?></td>
+                            <td>
                                 <form action="carrinho.php" method="POST">
                                     <input type="hidden" name="index" value="<?php echo $index; ?>">
                                     <input type="hidden" name="remover" value="1">
@@ -79,22 +128,13 @@ foreach ($_SESSION['pedido'] as $item) {
 
             <p><strong>Total:</strong> R$ <?php echo number_format($total, 2, ',', '.'); ?></p>
 
-            <a href="finalizar_pedido.php">
+            <a href="finalizarPedido.php">
                 <button>Finalizar Pedido</button>
             </a>
         <?php else: ?>
             <p>Seu carrinho está vazio.</p>
         <?php endif; ?>
-    
-<!-- <h2>Adicionar Item ao Carrinho</h2>
-        -- Formulário para adicionar um item (exemplo) 
-        <form action="carrinho.php" method="POST">
-            <input type="hidden" name="id" value="1">
-            <input type="hidden" name="nome" value="Item Exemplo">
-            <input type="hidden" name="preco" value="99.90">
-            <button type="submit" name="adicionar" value="1">Adicionar ao Carrinho</button>
-        </form>
-        -->
+        </div>
     </div>
 </body>
 </html>

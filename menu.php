@@ -9,11 +9,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="menu.css">
     <title>Cardápio</title>
+    <style>
+        .carrinho{
+            position: absolute;
+            top: 20px; 
+            right: 20px; 
+            text-decoration: none;
+            color: #357abd;
+            font-size: 18px; 
+            padding: 10px; 
+            background-color: #f1f1f1; 
+            border-radius: 5px; 
+        }
+        .sair{
+        text-decoration: none;
+        color: #357abd;
+        font-size: 18px;
+        padding: 10px; 
+        background-color: #f1f1f1; 
+        border-radius: 5px; 
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Fazer um Pedido</h1>
-        <a href="carrinho.php">Carrinho</a>
+        <a class="carrinho" href="carrinho.php">Carrinho</a>
         <div class="containergeral">
             <div class="image">
                 <img src="images/logotipo.png" alt="Logotipo" width="70px">
@@ -83,7 +104,7 @@
                     }
                 ?>
             </div>
-            <a href="logout.php">Sair</a>
+            <a class = "sair" href="logout.php">Sair</a>
         </div>
     </div>
 </body>

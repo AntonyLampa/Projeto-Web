@@ -1,26 +1,24 @@
 <?php
     include "conexao.php";
 
-    // Verifica se o parâmetro 'id' foi passado na URL
+    
     if (isset($_GET['id'])) {
-        // Sanitiza o id para evitar problemas de segurança
+        
         $id = intval($_GET['id']); 
 
-        // Consulta no banco de dados para pegar os detalhes do item
+        
         $cmd = $conn->prepare("SELECT * FROM tb_itens WHERE id = ?");
-        $cmd->bind_param("i", $id); // "i" significa integer
+        $cmd->bind_param("i", $id); 
         $cmd->execute();
         $res = $cmd->get_result();
 
         if ($res->num_rows > 0) {
-            // Caso o item exista, podemos pegar os dados
+            
             $item = $res->fetch_assoc();
         } else {
-            // Caso o item não exista
             $item = null;
         }
     } else {
-        // Caso o parâmetro 'id' não seja passado na URL
         $item = null;
     }
 ?>
@@ -32,10 +30,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="menu.css">
     <title>Detalhes</title>
+    <style>
+        .menu{
+            position: absolute;
+            top: 20px; 
+            right: 20px; 
+            text-decoration: none;
+            color: #357abd;
+            font-size: 18px; 
+            padding: 10px; 
+            background-color: #f1f1f1; 
+            border-radius: 5px; 
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <a href="menu.php">Menu</a>
+        <a class ="menu" href="menu.php">Menu</a>
         <h1>Detalhes do Item</h1>
         <div class="containergeral">
             <?php if ($item): ?>
