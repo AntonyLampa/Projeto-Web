@@ -1,41 +1,34 @@
 <?php
 session_start(); // Inicia a sessão
-include 'conexao.php';
+include 'conexao.php'; // Inclui a conexão com o banco de dados
 
 // Verifica se o usuário já está logado
 if (isset($_SESSION['usuario_id'])) {
-    // Redireciona diretamente para o menu se estiver logado
-    header("Location: menu.html");
+    header("Location: menu.php");
     exit();
 }
 
-// Verifica se os campos foram enviados
+// Verifica se o formulário foi enviado via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = htmlspecialchars(trim($_POST["email"]));
-    $senha = $_POST["senha"];
+    $email = htmlspecialchars(trim($_POST['email']));
+    $senha = $_POST['senha'];
 
-    // Prepara a query
+    // Prepara a consulta segura
     $cmd = $conn->prepare("SELECT * FROM tb_usuarios WHERE email = ?");
-
+    
     if ($cmd) {
-        // Associa os parâmetros
         $cmd->bind_param("s", $email);
-
-        // Executa a consulta
         $cmd->execute();
-
-        // Obtém o resultado
         $result = $cmd->get_result();
 
         if ($result->num_rows > 0) {
-            // Verifica se a senha está correta
             $usuario = $result->fetch_assoc();
+            // Verifica a senha com hash
             if (password_verify($senha, $usuario['senha'])) {
-                // Armazena o ID do usuário e outras informações na sessão
+                // Configura as variáveis de sessão
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_nome'] = $usuario['nome'];
-
-                // Redireciona para o menu
+                
                 header("Location: menu.php");
                 exit();
             } else {
@@ -48,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['login_error'] = "Erro ao preparar a consulta: " . $conn->error;
     }
 
-    // Redireciona de volta para a página de login
-    header("Location: index.php");
+    // Redireciona de volta para o formulário de login
+    header("Location: index.html"); // Alterado para redirecionar para o HTML agora
     exit();
 }
 ?>
