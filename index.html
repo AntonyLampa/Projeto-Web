@@ -1,15 +1,3 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Inicia a sessão somente se ela ainda não estiver ativa
-}
-
-// Verifica se o usuário já está logado
-if (isset($_SESSION['usuario_id'])) {
-    header("Location: menu.php"); // Redireciona para o menu se estiver logado
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -97,29 +85,24 @@ if (isset($_SESSION['usuario_id'])) {
             background-color: #cccccc;
             cursor: not-allowed;
         }
-
         .links-container {
             text-align: center;
             margin-top: 20px;
         }
-
         .link {
             color: #4a90e2;
             text-decoration: none;
             font-size: 14px;
             margin: 0 10px;
         }
-
         .link:hover {
             text-decoration: underline;
         }
-
-        .image{
+        .image {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
         @media (max-width: 480px) {
             form {
                 min-width: auto;
@@ -134,7 +117,6 @@ if (isset($_SESSION['usuario_id'])) {
         <h1>Login</h1>
         
         <form action="login.php" method="post" id="loginForm">
-
             <div class="image">
                 <img src="images/logotipo.png" alt="Logotipo" width="70px">
             </div>
@@ -148,15 +130,9 @@ if (isset($_SESSION['usuario_id'])) {
                 <input type="password" id="senha" name="senha" required>
             </div>
 
-            <!-- Exibição da mensagem de erro -->
-            <?php
-            if (isset($_SESSION['login_error'])) {
-                echo '<div class="error-message active">' . $_SESSION['login_error'] . '</div>';
-                unset($_SESSION['login_error']); // Limpa o erro após exibir
-            }
-            ?>
-            
+            <!-- Mensagem de erro gerenciada por JS -->
             <div id="loginError" class="error-message"></div>
+
             <button type="submit" class="button">Logar</button>
 
             <div class="links-container">
@@ -164,6 +140,7 @@ if (isset($_SESSION['usuario_id'])) {
             </div>
         </form>
     </div>
+
     <script>
         // Função para exibir mensagens de erro
         function mostrarErro(mensagem) {
